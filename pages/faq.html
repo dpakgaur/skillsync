@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - SkillSync</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --light-bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --text-dark: #1a202c;
+            --text-muted: #4a5568;
+            --border-glass: rgba(0, 0, 0, 0.1);
+            --shadow-light: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(247, 147, 206, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.06) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-nav .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .navbar-nav .nav-link:hover::before,
+        .navbar-nav .nav-link.active::before {
+            left: 0;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        /* Page Content */
+        .page-content {
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease 0.2s forwards;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3rem;
+            border: 2px solid var(--border-glass);
+            border-radius: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2), 0 4px 15px var(--shadow-light);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* FAQ Accordion */
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-glass);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+            box-shadow: 0 8px 25px var(--shadow-light);
+        }
+
+        .faq-item:nth-child(1) { animation-delay: 0.1s; }
+        .faq-item:nth-child(2) { animation-delay: 0.2s; }
+        .faq-item:nth-child(3) { animation-delay: 0.3s; }
+        .faq-item:nth-child(4) { animation-delay: 0.4s; }
+        .faq-item:nth-child(5) { animation-delay: 0.5s; }
+        .faq-item:nth-child(6) { animation-delay: 0.6s; }
+        .faq-item:nth-child(7) { animation-delay: 0.7s; }
+        .faq-item:nth-child(8) { animation-delay: 0.8s; }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .faq-question:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .faq-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: #667eea;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            background: rgba(102, 126, 234, 0.02);
+        }
+
+        .faq-answer.active {
+            max-height: 300px;
+        }
+
+        .faq-answer-content {
+            padding: 2rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--border-glass);
+            border-radius: 25px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+
+        .category-tab:hover,
+        .category-tab.active {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.25);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .faq-question {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .faq-answer-content {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 3rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 2px solid var(--border-glass);
+            box-shadow: 0 8px 25px var(--shadow-light);
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--accent-gradient);
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.4);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showSection('home')">
+                <i class="fas fa-graduation-cap"></i>SkillSync
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                     <li class="nav-item">
+                    <a class="nav-link" href="dashboard2.html">
+                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="portfolio.html">
+                        <i class="fas fa-briefcase me-1"></i>Portfolio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">
+                        <i class="fas fa-info-circle me-1"></i>About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faq.html">
+                        <i class="fas fa-question-circle me-1"></i>FAQ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="contact.html">
+                        <i class="fas fa-envelope me-1"></i>Contact
+                    </a>
+                </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="container" style="padding-top: 100px;">
+            <div class="page-header">
+                <h1 class="page-title">Frequently Asked Questions</h1>
+                <p class="page-subtitle">Find answers to common questions about SkillSync and learn how to make the most of our platform</p>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search for answers..." id="searchInput">
+                </div>
+            </div>
+
+            <div class="category-tabs">
+                <div class="category-tab active" onclick="filterCategory('all')">All</div>
+                <div class="category-tab" onclick="filterCategory('getting-started')">Getting Started</div>
+                <div class="category-tab" onclick="filterCategory('skills')">Skills</div>
+                <div class="category-tab" onclick="filterCategory('portfolio')">Portfolio</div>
+                <div class="category-tab" onclick="filterCategory('account')">Account</div>
+                <div class="category-tab" onclick="filterCategory('technical')">Technical</div>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item" data-category="getting-started">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-play-circle me-2" style="color: #667eea;"></i>How do I get started with SkillSync?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Getting started with SkillSync is easy! First, create your account and complete your profile. Then navigate to the Dashboard where you can begin adding your skills, experiences, and projects. Our intuitive interface guides you through each step, and you can start building your professional portfolio right away.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="skills">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-cogs me-2" style="color: #667eea;"></i>How do I add and manage my skills?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Go to the Dashboard and open the Skills tab. Use the "Add New Skill" form to input your skills with proficiency levels. You can categorize skills (technical, soft skills, languages), set proficiency ratings, and add certifications. Skills can be edited or removed at any time, and they automatically sync with your portfolio.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="portfolio">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-file-pdf me-2" style="color: #667eea;"></i>How can I generate a PDF resume?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            On the Dashboard, click the "Generate Resume PDF" button. You can choose from multiple professional templates, customize the layout, select which sections to include, and download your resume instantly. The PDF is optimized for ATS systems and maintains professional formatting.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="portfolio">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-palette me-2" style="color: #667eea;"></i>Can I customize my portfolio appearance?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely! SkillSync offers multiple themes, color schemes, and layout options. You can customize fonts, section arrangements, add your logo, and even create custom CSS styles. Your portfolio URL is shareable and looks professional across all devices.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="account">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-shield-alt me-2" style="color: #667eea;"></i>Is my data secure and private?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes, we take security seriously. All data is encrypted in transit and at rest. We use industry-standard security practices, regular backups, and comply with data protection regulations. You control your privacy settings and can choose what information is publicly visible in your portfolio.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="technical">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-mobile-alt me-2" style="color: #667eea;"></i>Is SkillSync mobile-friendly?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! SkillSync is fully responsive and works seamlessly on all devices - desktop, tablet, and mobile. You can edit your profile, add skills, and manage your portfolio from anywhere. The mobile experience is optimized for touch interactions and maintains all functionality.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="skills">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-chart-line me-2" style="color: #667eea;"></i>How do skill recommendations work?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Our AI-powered recommendation engine analyzes your current skills, career goals, and industry trends to suggest relevant skills to learn. It considers job market demands, skill gaps in your profile, and learning paths that align with your professional objectives.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="account">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span><i class="fas fa-users me-2" style="color: #667eea;"></i>Can I collaborate with others or share my progress?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! You can share your portfolio with a custom URL, export data for team reviews, and collaborate on projects. Premium users can create team accounts, track group progress, and share learning resources with colleagues.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-section">
+                <h3 class="contact-title">Still have questions?</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Can't find the answer you're looking for? Our support team is here to help!</p>
+                <a href="#" class="contact-btn" onclick="showSection('contact')">
+                    <i class="fas fa-headset me-2"></i>Contact Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const icon = button.querySelector('.faq-icon');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').classList.remove('active');
+                }
+            });
+            
+            // Toggle current FAQ
+            faqItem.classList.toggle('active');
+            answer.classList.toggle('active');
+        }
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeInUp 0.5s ease forwards';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Category Filter
+        function filterCategory(category) {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const tabs = document.querySelectorAll('.category-tab');
+            
+            // Update active tab
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter items
+            faqItems.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeInUp 0.5s ease forwards';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Navigation Functionality
+        function showSection(section) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to clicked link
+            event.target.classList.add('active');
+            
+            // Simple section switching simulation
+            const sections = {
+                'home': 'Welcome to SkillSync - Your Professional Development Platform',
+                'dashboard': 'Dashboard - Manage your skills and track progress',
+                'portfolio': 'Portfolio - Showcase your professional achievements',
+                'about': 'About SkillSync - Learn more about our mission and features',
+                'faq': 'Frequently Asked Questions',
+                'contact': 'Contact Us - Get in touch with our support team'
+            };
+            
+            if (section !== 'faq') {
+                document.querySelector('.page-title').textContent = sections[section];
+                document.querySelector('.page-subtitle').textContent = `You're now viewing the ${section} section. This is a demo of the navigation functionality.`;
+                
+                // Hide FAQ specific elements
+                document.querySelector('.search-container').style.display = 'none';
+                document.querySelector('.category-tabs').style.display = 'none';
+                document.querySelector('.faq-container').style.display = 'none';
+                document.querySelector('.contact-section').style.display = 'none';
+            } else {
+                // Show FAQ page
+                document.querySelector('.page-title').textContent = 'Frequently Asked Questions';
+                document.querySelector('.page-subtitle').textContent = 'Find answers to common questions about SkillSync and learn how to make the most of our platform';
+                document.querySelector('.search-container').style.display = 'block';
+                document.querySelector('.category-tabs').style.display = 'flex';
+                document.querySelector('.faq-container').style.display = 'block';
+                document.querySelector('.contact-section').style.display = 'block';
+            }
+        }
+
+        // Smooth scrolling for internal links
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling to all links
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Navbar background change on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                } else {
+                    navbar.style.background = 'var(--glass-bg)';
+                    navbar.style.boxShadow = 'none';
+                }
+            });
+        });
+
+        // Add loading animation for FAQ items
+        function animateFAQItems() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // Initialize animations
+        window.addEventListener('load', animateFAQItems);
+    </script>
+</body>
+</html>

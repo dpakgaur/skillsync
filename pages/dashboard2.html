@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync - Resume Builder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #7c3aed;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --navbar-glass: rgba(255,255,255,0.85);
+        }
+
+        /* Enhanced Navbar */
+        .navbar {
+            background: var(--navbar-glass);
+            box-shadow: 0 8px 32px 0 rgba(79,70,229,0.10), 0 1.5px 8px 0 rgba(124,58,237,0.08);
+            backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 0 0 32px 32px;
+            border-bottom: 2px solid #e0e7ff;
+            padding: 0.8rem 0;
+            transition: all 0.3s cubic-bezier(.4,2,.6,1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 2px 8px #764ba23a;
+        }
+
+        .navbar .nav-link {
+            font-weight: 600;
+            color: var(--text-primary) !important;
+            padding: 0.7rem 1.2rem;
+            margin: 0 0.3rem;
+            border-radius: 16px;
+            position: relative;
+            transition: 
+                color 0.2s,
+                background 0.2s,
+                box-shadow 0.2s,
+                transform 0.2s;
+        }
+
+        .navbar .nav-link:hover, .navbar .nav-link:focus {
+            color: #fff !important;
+            background: var(--gradient-primary);
+            box-shadow: 0 4px 16px #4f46e540;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .navbar .nav-link.active {
+            color: #fff !important;
+            background: var(--gradient-secondary);
+            box-shadow: 0 4px 16px #f093fb40;
+            transform: scale(1.08);
+        }
+
+        .navbar .nav-link.active::after {
+            content: '';
+            display: block;
+            margin: 0 auto;
+            margin-top: 6px;
+            width: 36px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--gradient-accent);
+            opacity: 0.8;
+        }
+
+        .navbar-toggler {
+            border: none;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+        }
+        .navbar-toggler-icon {
+            background-image: none;
+            width: 28px;
+            height: 28px;
+            position: relative;
+        }
+        .navbar-toggler-icon::before,
+        .navbar-toggler-icon::after,
+        .navbar-toggler-icon span {
+            content: '';
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: #fff;
+            border-radius: 2px;
+            margin: 4px 0;
+            transition: all 0.3s;
+        }
+        .navbar-toggler-icon span {
+            background: #fff;
+        }
+
+        .navbar .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: #fff;
+            font-weight: 600;
+            border-radius: 12px;
+            margin-right: 0.5rem;
+        }
+        .navbar .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 2px 8px #4f46e540;
+        }
+
+        .navbar .dropdown-menu {
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(79,70,229,0.10);
+            border: none;
+            margin-top: 0.7rem;
+            min-width: 180px;
+            background: #fff;
+        }
+        .navbar .dropdown-item {
+            font-weight: 500;
+            color: var(--text-primary);
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+        .navbar .dropdown-item:hover {
+            background: var(--gradient-primary);
+            color: #fff;
+        }
+
+        /* Navbar Glow Effect */
+        .navbar::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 32px;
+            background: radial-gradient(ellipse at center, #4f46e5 0%, transparent 80%);
+            opacity: 0.12;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 991px) {
+            .navbar {
+                border-radius: 0 0 18px 18px;
+            }
+            .navbar .nav-link {
+                margin: 0.2rem 0;
+                padding: 0.7rem 1rem;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* CRAZY animated neon gradient background with floating blobs */
+            background: linear-gradient(120deg, #4f46e5 0%, #06b6d4 25%, #f093fb 50%, #f5576c 75%, #10b981 100%);
+            background-size: 300% 300%;
+            animation: crazyNeonBg 10s ease-in-out infinite;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes crazyNeonBg {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        /* Floating neon blobs */
+        .crazy-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.5;
+            z-index: 0;
+            pointer-events: none;
+            animation: floatBlob 18s ease-in-out infinite alternate;
+            mix-blend-mode: lighten;
+        }
+        .crazy-blob.blob1 {
+            width: 400px; height: 400px;
+            top: -100px; left: -100px;
+            background: #4f46e5;
+            animation-delay: 0s;
+        }
+        .crazy-blob.blob2 {
+            width: 300px; height: 300px;
+            bottom: -80px; right: -80px;
+            background: #f093fb;
+            animation-delay: 4s;
+        }
+        .crazy-blob.blob3 {
+            width: 250px; height: 250px;
+            top: 60%; left: 60%;
+            background: #06b6d4;
+            animation-delay: 8s;
+        }
+        .crazy-blob.blob4 {
+            width: 200px; height: 200px;
+            top: 10%; right: 10%;
+            background: #10b981;
+            animation-delay: 12s;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translateY(0) scale(1);}
+            50% { transform: translateY(-40px) scale(1.1);}
+            100% { transform: translateY(0) scale(1);}
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .main-container {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .profile-photo-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-ring-circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+
+        .progress-ring-bg {
+            stroke: #e2e8f0;
+        }
+
+        .progress-ring-fill {
+            stroke: url(#gradient);
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Suggestions Card */
+        .suggestion-item {
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--success-color);
+            animation: slideInLeft 0.5s ease;
+        }
+
+        .suggestion-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Tabs */
+        .nav-tabs {
+            border: none;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--card-bg);
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Form Elements */
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 12px;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-success {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Skills/Certificates/Projects Lists */
+        .item-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .item-tag {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.9rem;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .item-tag .remove-btn {
+            background: none;
+            border: none;
+            color: white;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .item-tag .remove-btn:hover {
+            opacity: 1;
+        }
+
+        /* Action Buttons Area */
+        .action-buttons {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+        }
+
+        /* Real-time PDF Preview */
+        .pdf-preview {
+            width: 100%;
+            height: 600px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: white;
+            padding: 2rem;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .pdf-preview h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pdf-preview h2 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.25rem;
+        }
+
+        .pdf-preview .contact-info {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-card {
+                position: static;
+                margin-bottom: 2rem;
+            }
+            
+            .action-buttons {
+                text-align: center;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg shadow-sm" id="navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+           <i class="fas fa-graduation-cap"></i>
+          <span>SkillSync</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon">
+            <span></span>
+          </span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav gap-1">
+            <li class="nav-item">
+              <a class="nav-link active" href="dashboard2.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="portfolio.html"><i class="fas fa-briefcase me-1"></i>Portfolio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html"><i class="fas fa-user me-1"></i>About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="faq.html"><i class="fas fa-question-circle me-1"></i>FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Main Container -->
+    <div class="container main-container">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-4">
+                <!-- Profile & Progress Card -->
+                <div class="card profile-card fade-in">
+                    <div class="card-body text-center">
+                        <div class="profile-photo-container">
+                            <img src="https://via.placeholder.com/120x120/4f46e5/ffffff?text=Photo" alt="Profile" class="profile-photo" id="profilePhoto">
+                            <button class="photo-upload-btn" onclick="document.getElementById('photoInput').click()">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                        </div>
+                        
+                        <div class="progress-ring">
+                            <svg>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea"/>
+                                        <stop offset="100%" style="stop-color:#764ba2"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-ring-circle progress-ring-bg" cx="75" cy="75" r="60"></circle>
+                                <circle class="progress-ring-circle progress-ring-fill" cx="75" cy="75" r="60" id="progressCircle"></circle>
+                            </svg>
+                            <div class="progress-text" id="progressText">0%</div>
+                        </div>
+                        
+                        <h5 class="mb-1" id="profileName">Your Name</h5>
+                        <p class="text-muted" id="profileGoal">Career Goal</p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="skillsCount">0</div>
+                                <div class="stat-label">Skills</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="certificatesCount">0</div>
+                                <div class="stat-label">Certificates</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="projectsCount">0</div>
+                                <div class="stat-label">Projects</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Suggestions Card -->
+                <div class="card mt-4 fade-in">
+                    <div class="card-header">
+                        <i class="fas fa-lightbulb me-2"></i>Smart Suggestions
+                    </div>
+                    <div class="card-body" id="suggestionsContainer">
+                        <div class="suggestion-item">
+                            <i class="fas fa-star text-warning me-2"></i>
+                            <strong>Complete your profile to unlock all features!</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-8">
+                <!-- Main Content Card -->
+                <div class="card fade-in">
+                    <div class="card-body">
+                        <!-- Tabs Navigation -->
+                        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button">
+                                    <i class="fas fa-user me-2"></i>Basic Info
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="skills-tab" data-bs-toggle="tab" data-bs-target="#skills" type="button">
+                                    <i class="fas fa-cogs me-2"></i>Skills
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="certificates-tab" data-bs-toggle="tab" data-bs-target="#certificates" type="button">
+                                    <i class="fas fa-certificate me-2"></i>Certificates
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects" type="button">
+                                    <i class="fas fa-project-diagram me-2"></i>Projects
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview" type="button">
+                                    <i class="fas fa-file-pdf me-2"></i>Preview
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content" id="profileTabContent">
+                            <!-- Basic Info Tab -->
+                            <div class="tab-pane fade show active" id="basic" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Full Name *</label>
+                                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" oninput="updateProfile()">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email *</label>
+                                        <input type="email" class="form-control" id="email" placeholder="your.email@example.com" oninput="updateProfile()">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone *</label>
+                                        <input type="tel" class="form-control" id="phone" placeholder="+1 (555) 123-4567" oninput="updateProfile()">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Location *</label>
+                                        <input type="text" class="form-control" id="location" placeholder="City, State/Country" oninput="updateProfile()">
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Career Goal *</label>
+                                        <input type="text" class="form-control" id="careerGoal" placeholder="e.g., Full Stack Developer, Data Scientist" oninput="updateProfile()">
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Professional Summary</label>
+                                        <textarea class="form-control" id="summary" rows="4" placeholder="Brief description of your professional background and goals..." oninput="updateProfile()"></textarea>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Education Level</label>
+                                        <select class="form-select" id="education" onchange="updateProfile()">
+                                            <option value="">Select education level</option>
+                                            <option value="High School">High School</option>
+                                            <option value="Associate Degree">Associate Degree</option>
+                                            <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                            <option value="Master's Degree">Master's Degree</option>
+                                            <option value="PhD">PhD
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Years of Experience</label>
+                                        <select class="form-select" id="experience" onchange="updateProfile()">
+                                            <option value="">Select experience</option>
+                                            <option value="0-1">0-1 years</option>
+                                            <option value="2-3">2-3 years</option>
+                                            <option value="4-5">4-5 years</option>
+                                            <option value="6-10">6-10 years</option>
+                                            <option value="10+">10+ years</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Skills Tab -->
+                            <div class="tab-pane fade" id="skills" role="tabpanel">
+                                <div class="mb-4">
+                                    <div class="d-flex gap-2 mb-3">
+                                        <input type="text" class="form-control" id="skillInput" placeholder="Enter a skill (e.g., JavaScript, Python, Design)" onkeypress="handleSkillKeyPress(event)">
+                                        <button class="btn btn-primary" onclick="addSkill()">
+                                            <i class="fas fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <div class="item-list" id="skillsList"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-muted mb-2">Suggested Skills:</h6>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="badge bg-light text-dark cursor-pointer" onclick="addSuggestedSkill('JavaScript')">JavaScript</span>
+                                            <span class="badge bg-light text-dark cursor-pointer" onclick="addSuggestedSkill('Python')">Python</span>
+                                            <span class="badge bg-light text-dark cursor-pointer" onclick="addSuggestedSkill('React')">React</span>
+                                            <span class="badge bg-light text-dark cursor-pointer" onclick="addSuggestedSkill('Node.js')">Node.js</span>
+                                            <span class="badge bg-light text-dark cursor-pointer" onclick="addSuggestedSkill('SQL')">SQL</span>
+                                            <span class="badge bg-light text-dark cursor-pointer" onclick="addSuggestedSkill('Git')">Git</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Certificates Tab -->
+                            <div class="tab-pane fade" id="certificates" role="tabpanel">
+                                <div class="mb-4">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="certName" placeholder="Certificate name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" id="certIssuer" placeholder="Issuing organization">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary w-100" onclick="addCertificate()">
+                                                <i class="fas fa-plus"></i> Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="item-list" id="certificatesList"></div>
+                                </div>
+                            </div>
+
+                            <!-- Projects Tab -->
+                            <div class="tab-pane fade" id="projects" role="tabpanel">
+                                <div class="mb-4">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" id="projectName" placeholder="Project name">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="projectDesc" placeholder="Brief description">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary w-100" onclick="addProject()">
+                                                <i class="fas fa-plus"></i> Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="item-list" id="projectsList"></div>
+                                </div>
+                            </div>
+
+                            <!-- Preview Tab -->
+                            <div class="tab-pane fade" id="preview" role="tabpanel">
+                                <div class="pdf-preview" id="pdfPreview">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-file-pdf fa-3x mb-3"></i>
+                                        <p>Fill in your information to see the resume preview</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Resume Template</label>
+                                <select class="form-select" id="templateSelector" onchange="updatePreview()">
+                                    <option value="classic">Classic Professional</option>
+                                    <option value="modern">Modern Creative</option>
+                                    <option value="compact">Compact Clean</option>
+                                    <option value="executive">Executive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2 justify-content-end">
+                                <button class="btn btn-outline-primary" onclick="previewResume()" id="previewBtn">
+                                    <i class="fas fa-eye me-2"></i>Preview Resume
+                                </button>
+                                <button class="btn btn-success" onclick="generatePDF()" id="generateBtn" disabled>
+                                    <i class="fas fa-download me-2"></i>Download PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+                            </div>
+                            <small class="text-muted mt-1 d-block">Complete at least 50% to download your resume</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Global variables
+        let profileData = {
+            fullName: '',
+            email: '',
+            phone: '',
+            location: '',
+            careerGoal: '',
+            summary: '',
+            education: '',
+            experience: '',
+            skills: [],
+            certificates: [],
+            projects: [],
+            photo: null
+        };
+
+        let progressPercentage = 0;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateSuggestions();
+            updatePreview();
+            
+            // Add smooth scrolling to tabs
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function() {
+                    updatePreview();
+                });
+            });
+        });
+
+        // Photo upload handler
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePhoto').src = e.target.result;
+                    profileData.photo = e.target.result;
+                    updateProgress();
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Update profile data and progress
+        function updateProfile() {
+            // Get form values
+            profileData.fullName = document.getElementById('fullName').value;
+            profileData.email = document.getElementById('email').value;
+            profileData.phone = document.getElementById('phone').value;
+            profileData.location = document.getElementById('location').value;
+            profileData.careerGoal = document.getElementById('careerGoal').value;
+            profileData.summary = document.getElementById('summary').value;
+            profileData.education = document.getElementById('education').value;
+            profileData.experience = document.getElementById('experience').value;
+
+            // Update display
+            document.getElementById('profileName').textContent =
+            document.getElementById('profileGoal').textContent = profileData.careerGoal || 'Career Goal';
+
+            // Update progress
+            updateProgress();
+            updateSuggestions();
+            updatePreview();
+        }
+
+        // Calculate and update progress
+        function updateProgress() {
+            const requiredFields = ['fullName', 'email', 'phone', 'location', 'careerGoal'];
+            const optionalFields = ['summary', 'education', 'experience'];
+            
+            let completed = 0;
+            let total = requiredFields.length + optionalFields.length + 3; // +3 for skills, certs, projects
+
+            // Check required fields
+            requiredFields.forEach(field => {
+                if (profileData[field] && profileData[field].trim()) completed++;
+            });
+
+            // Check optional fields (worth less)
+            optionalFields.forEach(field => {
+                if (profileData[field] && profileData[field].trim()) completed += 0.5;
+            });
+
+            // Check arrays
+            if (profileData.skills.length > 0) completed++;
+            if (profileData.certificates.length > 0) completed++;
+            if (profileData.projects.length > 0) completed++;
+
+            // Photo bonus
+            if (profileData.photo) completed += 0.5;
+
+            progressPercentage = Math.round((completed / total) * 100);
+            
+            // Update progress ring
+            const circle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 60;
+            const strokeDasharray = (progressPercentage / 100) * circumference;
+            circle.style.strokeDasharray = strokeDasharray + ' ' + circumference;
+            
+            document.getElementById('progressText').textContent = progressPercentage + '%';
+            document.getElementById('progressBar').style.width = progressPercentage + '%';
+
+            // Update stats
+            document.getElementById('skillsCount').textContent = profileData.skills.length;
+            document.getElementById('certificatesCount').textContent = profileData.certificates.length;
+            document.getElementById('projectsCount').textContent = profileData.projects.length;
+
+            // Enable/disable generate button
+            const generateBtn = document.getElementById('generateBtn');
+            if (progressPercentage >= 50) {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-download me-2"></i>Download PDF';
+            } else {
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = `<i class="fas fa-lock me-2"></i>Need ${50 - progressPercentage}% more`;
+            }
+        }
+
+        // Update smart suggestions
+        function updateSuggestions() {
+            const suggestions = [];
+            
+            if (!profileData.fullName) suggestions.push('💡 Add your full name to get started');
+            if (!profileData.email) suggestions.push('📧 Don\'t forget your email address');
+            if (profileData.skills.length === 0) suggestions.push('🛠️ Add some skills to showcase your abilities');
+            if (profileData.skills.length < 5) suggestions.push('⭐ Add more skills to stand out (aim for 5-10)');
+            if (!profileData.summary) suggestions.push('📝 Write a professional summary to make a great first impression');
+            if (profileData.certificates.length === 0) suggestions.push('🏆 Add certificates to boost your credibility');
+            if (profileData.projects.length === 0) suggestions.push('🚀 Showcase your projects to demonstrate experience');
+            if (!profileData.photo) suggestions.push('📸 Upload a professional photo');
+            
+            if (suggestions.length === 0) {
+                suggestions.push('🎉 Excellent! Your profile is looking great!');
+                suggestions.push('💼 Consider adding more projects or certificates');
+                suggestions.push('🌟 You\'re ready to generate your professional resume!');
+            }
+
+            const container = document.getElementById('suggestionsContainer');
+            container.innerHTML = suggestions.map(suggestion => 
+                `<div class="suggestion-item fade-in">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    ${suggestion}
+                </div>`
+            ).join('');
+        }
+
+        // Skills management
+        function addSkill() {
+            const input = document.getElementById('skillInput');
+            const skill = input.value.trim();
+            
+            if (skill && !profileData.skills.includes(skill)) {
+                profileData.skills.push(skill);
+                input.value = '';
+                updateSkillsList();
+                updateProgress();
+                updatePreview();
+            }
+        }
+
+        function addSuggestedSkill(skill) {
+            if (!profileData.skills.includes(skill)) {
+                profileData.skills.push(skill);
+                updateSkillsList();
+                updateProgress();
+                updatePreview();
+            }
+        }
+
+        function handleSkillKeyPress(event) {
+            if (event.key === 'Enter') {
+                addSkill();
+            }
+        }
+
+        function removeSkill(skill) {
+            profileData.skills = profileData.skills.filter(s => s !== skill);
+            updateSkillsList();
+            updateProgress();
+            updatePreview();
+        }
+
+        function updateSkillsList() {
+            const container = document.getElementById('skillsList');
+            container.innerHTML = profileData.skills.map(skill => 
+                `<span class="item-tag">
+                    ${skill}
+                    <button class="remove-btn" onclick="removeSkill('${skill}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </span>`
+            ).join('');
+        }
+
+        // Certificates management
+        function addCertificate() {
+            const name = document.getElementById('certName').value.trim();
+            const issuer = document.getElementById('certIssuer').value.trim();
+            
+            if (name && issuer) {
+                profileData.certificates.push({ name, issuer });
+                document.getElementById('certName').value = '';
+                document.getElementById('certIssuer').value = '';
+                updateCertificatesList();
+                updateProgress();
+                updatePreview();
+            }
+        }
+
+        function removeCertificate(index) {
+            profileData.certificates.splice(index, 1);
+            updateCertificatesList();
+            updateProgress();
+            updatePreview();
+        }
+
+        function updateCertificatesList() {
+            const container = document.getElementById('certificatesList');
+            container.innerHTML = profileData.certificates.map((cert, index) => 
+                `<div class="item-tag d-block mb-2 text-start">
+                    <strong>${cert.name}</strong><br>
+                    <small>${cert.issuer}</small>
+                    <button class="remove-btn float-end" onclick="removeCertificate(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>`
+            ).join('');
+        }
+
+        // Projects management
+        function addProject() {
+            const name = document.getElementById('projectName').value.trim();
+            const description = document.getElementById('projectDesc').value.trim();
+            
+            if (name && description) {
+                profileData.projects.push({ name, description });
+                document.getElementById('projectName').value = '';
+                document.getElementById('projectDesc').value = '';
+                updateProjectsList();
+                updateProgress();
+                updatePreview();
+            }
+        }
+
+        function removeProject(index) {
+            profileData.projects.splice(index, 1);
+            updateProjectsList();
+            updateProgress();
+            updatePreview();
+        }
+
+        function updateProjectsList() {
+            const container = document.getElementById('projectsList');
+            container.innerHTML = profileData.projects.map((project, index) => 
+                `<div class="item-tag d-block mb-2 text-start">
+                    <strong>${project.name}</strong><br>
+                    <small>${project.description}</small>
+                    <button class="remove-btn float-end" onclick="removeProject(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>`
+            ).join('');
+        }
+
+        // Real-time PDF preview
+        function updatePreview() {
+            const preview = document.getElementById('pdfPreview');
+            const template = document.getElementById('templateSelector').value;
+            
+            if (!profileData.fullName && !profileData.email) {
+                preview.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="fas fa-file-pdf fa-3x mb-3"></i>
+                        <p>Fill in your information to see the resume preview</p>
+                    </div>`;
+                return;
+            }
+
+            let previewHTML = generateResumeHTML(template);
+            preview.innerHTML = previewHTML;
+        }
+
+        function generateResumeHTML(template) {
+            let html = '';
+            
+            switch(template) {
+                case 'modern':
+                    html = generateModernTemplate();
+                    break;
+                case 'compact':
+                    html = generateCompactTemplate();
+                    break;
+                case 'executive':
+                    html = generateExecutiveTemplate();
+                    break;
+                default:
+                    html = generateClassicTemplate();
+            }
+            
+            return html;
+        }
+
+        function generateClassicTemplate() {
+            return `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                    <header style="text-align: center; margin-bottom: 2rem; border-bottom: 2px solid #4f46e5; padding-bottom: 1rem;">
+                        <h1 style="color: #4f46e5; margin: 0; font-size: 2rem;">${profileData.fullName || 'Your Name'}</h1>
+                        <div class="contact-info" style="margin-top: 0.5rem;">
+                            ${profileData.email ? `📧 ${profileData.email}` : ''} 
+                            ${profileData.phone ? `📞 ${profileData.phone}` : ''} 
+                            ${profileData.location ? `📍 ${profileData.location}` : ''}
+                        </div>
+                        ${profileData.careerGoal ? `<p style="margin: 0.5rem 0; font-style: italic; color: #666;">${profileData.careerGoal}</p>` : ''}
+                    </header>
+                    
+                    ${profileData.summary ? `
+                    <section style="margin-bottom: 1.5rem;">
+                        <h2>Professional Summary</h2>
+                        <p>${profileData.summary}</p>
+                    </section>` : ''}
+                    
+                    ${profileData.skills.length > 0 ? `
+                    <section style="margin-bottom: 1.5rem;">
+                        <h2>Skills</h2>
+                        <p>${profileData.skills.join(' • ')}</p>
+                    </section>` : ''}
+                    
+                    ${profileData.certificates.length > 0 ? `
+                    <section style="margin-bottom: 1.5rem;">
+                        <h2>Certifications</h2>
+                        ${profileData.certificates.map(cert => `<p><strong>${cert.name}</strong> - ${cert.issuer}</p>`).join('')}
+                    </section>` : ''}
+                    
+                    ${profileData.projects.length > 0 ? `
+                    <section style="margin-bottom: 1.5rem;">
+                        <h2>Projects</h2>
+                        ${profileData.projects.map(project => `<p><strong>${project.name}</strong> - ${project.description}</p>`).join('')}
+                    </section>` : ''}
+                    
+                    ${profileData.education || profileData.experience ? `
+                    <section style="margin-bottom: 1.5rem;">
+                        <h2>Additional Information</h2>
+                        ${profileData.education ? `<p><strong>Education:</strong> ${profileData.education}</p>` : ''}
+                        ${profileData.experience ? `<p><strong>Experience:</strong> ${profileData.experience}</p>` : ''}
+                    </section>` : ''}
+                </div>`;
+        }
+
+        function generateModernTemplate() {
+            return `
+                <div style="font-family: 'Segoe UI', sans-serif; line-height: 1.6; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 10px;">
+                    <header style="text-align: center; margin-bottom: 2rem;">
+                        <h1 style="margin: 0; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${profileData.fullName || 'Your Name'}</h1>
+                        <div style="background: rgba(255,255,255,0.2); padding: 1rem; margin-top: 1rem; border-radius: 10px;">
+                            ${profileData.email ? `✉️ ${profileData.email}` : ''} 
+                            ${profileData.phone ? `📱 ${profileData.phone}` : ''} 
+                            ${profileData.location ? `🌍 ${profileData.location}` : ''}
+                        </div>
+                        ${profileData.careerGoal ? `<h3 style="margin: 1rem 0; font-weight: 300;">${profileData.careerGoal}</h3>` : ''}
+                    </header>
+                    
+                    <div style="background: white; color: #333; padding: 2rem; border-radius: 10px; margin-top: 1rem;">
+                        ${profileData.summary ? `
+                        <section style="margin-bottom: 1.5rem;">
+                            <h2 style="color: #667eea; border-left: 4px solid #667eea; padding-left: 1rem;">About Me</h2>
+                            <p>${profileData.summary}</p>
+                        </section>` : ''}
+                        
+                        ${profileData.skills.length > 0 ? `
+                        <section style="margin-bottom: 1.5rem;">
+                            <h2 style="color: #667eea; border-left: 4px solid #667eea; padding-left: 1rem;">Technical Skills</h2>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                ${profileData.skills.map(skill => `<span style="background: #667eea; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem;">${skill}</span>`).join('')}
+                            </div>
+                        </section>` : ''}
+                        
+                        ${profileData.certificates.length > 0 ? `
+                        <section style="margin-bottom: 1.5rem;">
+                            <h2 style="color: #667eea; border-left: 4px solid #667eea; padding-left: 1rem;">Certifications</h2>
+                            ${profileData.certificates.map(cert => `<p>🏆 <strong>${cert.name}</strong> - ${cert.issuer}</p>`).join('')}
+                        </section>` : ''}
+                        
+                        ${profileData.projects.length > 0 ? `
+                        <section style="margin-bottom: 1.5rem;">
+                            <h2 style="color: #667eea; border-left: 4px solid #667eea; padding-left: 1rem;">Featured Projects</h2>
+                            ${profileData.projects.map(project => `<p>🚀 <strong>${project.name}</strong> - ${project.description}</p>`).join('')}
+                        </section>` : ''}
+                    </div>
+                </div>`;
+        }
+
+        function generateCompactTemplate() {
+            return `
+                <div style="font-family: 'Arial', sans-serif; line-height: 1.4; font-size: 0.9rem;">
+                    <table style="width: 100%; margin-bottom: 1rem;">
+                        <tr>
+                            <td style="width: 70%;">
+                                <h1 style="margin: 0; font-size: 1.8rem; color: #2563eb;">${profileData.fullName || 'Your Name'}</h1>
+                                ${profileData.careerGoal ? `<p style="margin: 0.2rem 0; font-weight: bold; color: #666;">${profileData.careerGoal}</p>` : ''}
+                            </td>
+                            <td style="text-align: right; font-size: 0.8rem;">
+                                ${profileData.email ? `${profileData.email}<br>` : ''}
+                                ${profileData.phone ? `${profileData.phone}<br>` : ''}
+                                ${profileData.location ? `${profileData.location}` : ''}
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    ${profileData.summary ? `
+                    <section style="margin-bottom: 1rem;">
+                        <h3 style="background: #2563eb; color: white; padding: 0.3rem 0.5rem; margin: 0 0 0.5rem; font-size: 1rem;">SUMMARY</h3>
+                        <p style="margin: 0;">${profileData.summary}</p>
+                    </section>` : ''}
+                    
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 60%; vertical-align: top; padding-right: 1rem;">
+                                ${profileData.skills.length > 0 ? `
+                                <section style="margin-bottom: 1rem;">
+                                    <h3 style="background: #2563eb; color: white; padding: 0.3rem 0.5rem; margin: 0 0 0.5rem; font-size: 1rem;">SKILLS</h3>
+                                    <p style="margin: 0;">${profileData.skills.join(', ')}</p>
+                                </section>` : ''}
+                                
+                                ${profileData.projects.length > 0 ? `
+                                <section style="margin-bottom: 1rem;">
+                                    <h3 style="background: #2563eb; color: white; padding: 0.3rem 0.5rem; margin: 0 0 0.5rem; font-size: 1rem;">PROJECTS</h3>
+                                    ${profileData.projects.map(project => `<p style="margin: 0 0 0.5rem;"><strong>${project.name}:</strong> ${project.description}</p>`).join('')}
+                                </section>` : ''}
+                            </td>
+                            <td style="width: 40%; vertical-align: top;">
+                                ${profileData.certificates.length > 0 ? `
+                                <section style="margin-bottom: 1rem;">
+                                    <h3 style="background: #2563eb; color: white; padding: 0.3rem 0.5rem; margin: 0 0 0.5rem; font-size: 1rem;">CERTIFICATIONS</h3>
+                                    ${profileData.certificates.map(cert => `<p style="margin: 0 0 0.5rem;"><strong>${cert.name}</strong><br><small>${cert.issuer}</small></p>`).join('')}
+                                </section>` : ''}
+                                
+                                ${profileData.education || profileData.experience ? `
+                                <section>
+                                    <h3 style="background: #2563eb; color: white; padding: 0.3rem 0.5rem; margin: 0 0 0.5rem; font-size: 1rem;">DETAILS</h3>
+                                    ${profileData.education ? `<p style="margin: 0 0 0.5rem;"><strong>Education:</strong> ${profileData.education}</p>` : ''}
+                                    ${profileData.experience ? `<p style="margin: 0;"><strong>Experience:</strong> ${profileData.experience}</p>` : ''}
+                                </section>` : ''}
+                            </td>
+                        </tr>
+                    </table>
+                </div>`;
+        }
+
+        function generateExecutiveTemplate() {
+            return `
+                <div style="font-family: 'Times New Roman', serif; line-height: 1.6;">
+                    <header style="text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px double #333;">
+                        <h1 style="margin: 0; font-size: 2.2rem; color: #1a1a1a; letter-spacing: 1px;">${profileData.fullName || 'Your Name'}</h1>
+                        ${profileData.careerGoal ? `<h2 style="margin: 0.5rem 0; font-size: 1.2rem; color: #666; font-weight: normal;">${profileData.careerGoal}</h2>` : ''}
+                        <div style="margin-top: 1rem; font-size: 0.95rem;">
+                            ${profileData.email ? `${profileData.email}` : ''} 
+                            ${profileData.phone ? ` | ${profileData.phone}` : ''} 
+                            ${profileData.location ? ` | ${profileData.location}` : ''}
+                        </div>
+                    </header>
+                    
+                    ${profileData.summary ? `
+                    <section style="margin-bottom: 2rem;">
+                        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; margin-bottom: 1rem;">EXECUTIVE SUMMARY</h3>
+                        <p style="text-align: justify;">${profileData.summary}</p>
+                    </section>` : ''}
+                    
+                    ${profileData.skills.length > 0 ? `
+                    <section style="margin-bottom: 2rem;">
+                        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; margin-bottom: 1rem;">CORE COMPETENCIES</h3>
+                        <ul style="columns: 2; list-style-type: none; padding: 0;">
+                            ${profileData.skills.map(skill => `<li style="margin-bottom: 0.3rem;">• ${skill}</li>`).join('')}
+                        </ul>
+                    </section>` : ''}
+                    
+                    ${profileData.certificates.length > 0 ? `
+                    <section style="margin-bottom: 2rem;">
+                        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; margin-bottom: 1rem;">PROFESSIONAL CERTIFICATIONS</h3>
+                        ${profileData.certificates.map(cert => `<p style="margin-bottom: 0.8rem;"><strong>${cert.name}</strong><br><em>${cert.issuer}</em></p>`).join('')}
+                    </section>` : ''}
+                    
+                    ${profileData.projects.length > 0 ? `
+                    <section style="margin-bottom: 2rem;">
+                        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; margin-bottom: 1rem;">KEY PROJECTS & ACHIEVEMENTS</h3>
+                        ${profileData.projects.map(project => `<div style="margin-bottom: 1rem;"><strong>${project.name}</strong><br>${project.description}</div>`).join('')}
+                    </section>` : ''}
+                    
+                    ${profileData.education || profileData.experience ? `
+                    <section>
+                        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; margin-bottom: 1rem;">ADDITIONAL INFORMATION</h3>
+                        ${profileData.education ? `<p><strong>Education Level:</strong> ${profileData.education}</p>` : ''}
+                        ${profileData.experience ? `<p><strong>Years of Experience:</strong> ${profileData.experience}</p>` : ''}
+                    </section>` : ''}
+                </div>`;
+        }
+
+        // Preview resume in modal
+        function previewResume() {
+            const template = document.getElementById('templateSelector').value;
+            const resumeHTML = generateResumeHTML(template);
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="fas fa-file-pdf me-2"></i>Resume Preview - ${template.charAt(0).toUpperCase() + template.slice(1)} Template
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                            <div style="background: white; padding: 2rem; border: 1px solid #ddd; border-radius: 8px;">
+                                ${resumeHTML}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="generatePDF(); bootstrap.Modal.getInstance(this.closest('.modal')).hide();">
+                                <i class="fas fa-download me-2"></i>Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            
+            document.body.appendChild(modal);
+            const modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+            
+            modal.addEventListener('hidden.bs.modal', () => {
+                document.body.removeChild(modal);
+            });
+        }
+
+        // Generate PDF
+        function generatePDF() {
+            if (progressPercentage < 50) {
+                alert('Please complete at least 50% of your profile to generate a PDF.');
+                return;
+            }
+
+            const button = document.getElementById('generateBtn');
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<span class="spinner"></span> Generating...';
+            button.disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Set font
+                doc.setFont('helvetica');
+                
+                let yPosition = 20;
+                const lineHeight = 7;
+                const pageHeight = doc.internal.pageSize.height;
+                
+                // Helper function to add text with word wrapping
+                function addText(text, fontSize = 12, isBold = false, color = [0, 0, 0]) {
+                    doc.setFontSize(fontSize);
+                    doc.setTextColor(color[0], color[1], color[2]);
+                    if (isBold) {
+                        doc.setFont('helvetica', 'bold');
+                    } else {
+                        doc.setFont('helvetica', 'normal');
+                    }
+                    
+                    const lines = doc.splitTextToSize(text, 170);
+                    lines.forEach(line => {
+                        if (yPosition > pageHeight - 20) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        doc.text(line, 20, yPosition);
+                        yPosition += lineHeight;
+                    });
+                }
+
+                // Add Name
+                if (profileData.fullName) {
+                    addText(profileData.fullName, 18, true, [79, 70, 229]);
+                }
+                // Add Career Goal
+                if (profileData.careerGoal) {
+                    addText(profileData.careerGoal, 12, false, [124, 58, 237]);
+                }
+                yPosition += 2;
+
+                // Add Contact Info
+                let contactInfo = [];
+                if (profileData.email) contactInfo.push(`Email: ${profileData.email}`);
+                if (profileData.phone) contactInfo.push(`Phone: ${profileData.phone}`);
+                if (profileData.location) contactInfo.push(`Location: ${profileData.location}`);
+                if (contactInfo.length) {
+                    addText(contactInfo.join(' | '), 10, false, [100, 100, 100]);
+                }
+                yPosition += 2;
+
+                // Add Summary
+                if (profileData.summary) {
+                    addText('Professional Summary', 13, true, [79, 70, 229]);
+                    addText(profileData.summary, 11);
+                    yPosition += 2;
+                }
+
+                // Add Skills
+                if (profileData.skills.length > 0) {
+                    addText('Skills', 13, true, [79, 70, 229]);
+                    addText(profileData.skills.join(', '), 11);
+                    yPosition += 2;
+                }
+
+                // Add Certificates
+                if (profileData.certificates.length > 0) {
+                    addText('Certificates', 13, true, [79, 70, 229]);
+                    profileData.certificates.forEach(cert => {
+                        addText(`${cert.name} - ${cert.issuer}`, 11);
+                    });
+                    yPosition += 2;
+                }
+
+                // Add Projects
+                if (profileData.projects.length > 0) {
+                    addText('Projects', 13, true, [79, 70, 229]);
+                    profileData.projects.forEach(project => {
+                        addText(`${project.name}: ${project.description}`, 11);
+                    });
+                    yPosition += 2;
+                }
+
+                // Additional Info
+                if (profileData.education || profileData.experience) {
+                    addText('Additional Information', 13, true, [79, 70, 229]);
+                    if (profileData.education) {
+                        addText(`Education: ${profileData.education}`, 11);
+                    }
+                    if (profileData.experience) {
+                        addText(`Experience: ${profileData.experience}`, 11);
+                    }
+                    yPosition += 2;
+                }
+
+                // Save PDF
+                setTimeout(() => {
+                    doc.save(`${profileData.fullName ? profileData.fullName.replace(/\s+/g, '_') : 'resume'}.pdf`);
+                    button.innerHTML = originalHTML;
+                    button.disabled = false;
+                }, 500);
+
+            } catch (err) {
+                alert('An error occurred while generating the PDF.');
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+            }
+        }
+
+        // Theme toggle (optional)
+         function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+    </script>
+</body>
+</html>

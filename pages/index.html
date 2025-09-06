@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SkillSync - Build Your Future</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+   
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-xl: 0 35px 60px -12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 300% 300%;
+            animation: gradientFlow 12s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Enhanced Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 1rem 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, #fff 0%, #f0f9ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar.scrolled .navbar-brand {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar.scrolled .nav-link {
+            color: var(--dark) !important;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-get-started {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-get-started::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            transition: left 0.3s ease;
+        }
+
+        .btn-get-started:hover::before {
+            left: 0;
+        }
+
+        .btn-get-started:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-get-started span {
+            position: relative;
+            z-index: 1;
+        }
+
+       
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 6rem 0 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #f0f9ff 50%, #e0f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-primary-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-secondary-hero {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 3rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-hero:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Interactive Resume Builder Preview */
+        .resume-preview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .resume-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 3rem 3rem 0 0;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #f0f9ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Resume Templates Section */
+        .templates-section {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .template-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            height: 100%;
+        }
+
+        .template-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .template-preview {
+            height: 300px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-preview::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 0.5rem;
+            opacity: 0.1;
+        }
+
+        .template-preview::after {
+            content: '';
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(99, 102, 241, 0.05) 0px,
+                rgba(99, 102, 241, 0.05) 15px,
+                transparent 15px,
+                transparent 25px
+            );
+            border-radius: 0.5rem;
+        }
+
+        .template-info {
+            padding: 1.5rem;
+        }
+
+        .template-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .template-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .template-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .template-tag {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Interactive Steps */
+        .steps-section {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .step-item.active {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            color: white;
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Stats Counter */
+        .stats-section {
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-card {
+            color: white;
+        }
+
+        .stat-number-large {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label-large {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cta-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-stats {
+                justify-content: center;
+            }
+            
+            .hero-cta {
+                justify-content: center;
+            }
+            
+            .step-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap"></i>
+                SkillSync
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#templates">Templates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How it Works</a>
+                    </li>
+                </ul>
+                <button class="btn-get-started" onclick="startResumeBuilder()">
+                    <span>Login/SignUp</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1>Build Your Dream Resume in Minutes</h1>
+                        <p class="hero-subtitle">
+                            Professional resume builder designed for college students and freshers. Land your first job with ATS-friendly templates and expert guidance.
+                        </p>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="50000">0</span>
+                                <span class="stat-label">Resumes Created</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="95">0</span>
+                                <span class="stat-label">% Success Rate</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="500">0</span>
+                                <span class="stat-label">Companies Trust Us</span>
+                            </div>
+                        </div>
+
+                        <div class="hero-cta">
+                            <button class="btn-primary-hero" onclick="startResumeBuilder()">
+                                <i class="fas fa-rocket"></i> Start Building Now
+                            </button>
+                            <button class="btn-secondary-hero" onclick="watchDemo()">
+                                <i class="fas fa-play"></i> Watch Demo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="resume-preview">
+                        <div style="text-align: center; color: var(--primary);">
+                            <i class="fas fa-file-alt" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                            <h5 style="color: var(--dark); margin-bottom: 1rem;">Professional Resume Template</h5>
+                            <div style="height: 200px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                                <div style="text-align: left; color: var(--dark); opacity: 0.6;">
+                                    <div style="height: 20px; background: var(--primary); width: 150px; margin-bottom: 10px; border-radius: 2px; opacity: 0.3;"></div>
+                                    <div style="height: 10px; background: var(--dark); width: 200px; margin-bottom: 5px; border-radius: 1px; opacity: 0.2;"></div>
+                                    <div style="height: 10px; background: var(--dark); width: 180px; margin-bottom: 5px; border-radius: 1px; opacity: 0.2;"></div>
+                                    <div style="height: 10px; background: var(--dark); width: 160px; margin-bottom: 15px; border-radius: 1px; opacity: 0.2;"></div>
+                                    <div style="height: 15px; background: var(--accent); width: 120px; margin-bottom: 10px; border-radius: 2px; opacity: 0.4;"></div>
+                                    <div style="height: 8px; background: var(--dark); width: 220px; margin-bottom: 3px; border-radius: 1px; opacity: 0.2;"></div>
+                                    <div style="height: 8px; background: var(--dark); width: 200px; margin-bottom: 3px; border-radius: 1px; opacity: 0.2;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Students Choose SkillSync?</h2>
+            <p class="section-subtitle">Everything you need to create a standout resume that gets you hired</p>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3 class="feature-title">AI-Powered Content</h3>
+                        <p class="feature-description">Smart suggestions and industry-specific content tailored to your field of study and career goals.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="feature-title">ATS-Friendly</h3>
+                        <p class="feature-description">All templates are optimized to pass Applicant Tracking Systems used by 95% of Fortune 500 companies.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Expert Reviews</h3>
+                        <p class="feature-description">Get your resume reviewed by industry professionals and HR experts before applying.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mobile Friendly</h3>
+                        <p class="feature-description">Build and edit your resume on any device, anywhere, anytime. Perfect for busy students.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3 class="feature-title">Multiple Formats</h3>
+                        <p class="feature-description">Download in PDF, Word, or share with a custom link. Compatible with all job portals.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="feature-title">Student-Focused</h3>
+                        <p class="feature-description">Special sections for projects, coursework, internships, and extracurricular activities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Templates Section -->
+    <section id="templates" class="templates-section">
+        <div class="container">
+            <h2 class="section-title">Professional Templates</h2>
+            <p class="section-subtitle">Choose from our collection of modern, ATS-friendly resume templates</p>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="template-card fade-in-up">
+                        <div class="template-preview">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="template-info">
+                            <h4 class="template-title">Professional</h4>
+                            <p class="template-description">Clean and professional design perfect for corporate jobs and internships.</p>
+                            <div class="template-tags">
+                                <span class="template-tag">Corporate</span>
+                                <span class="template-tag">Finance</span>
+                                <span class="template-tag">Consulting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="template-card fade-in-up">
+                        <div class="template-preview">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="template-info">
+                            <h4 class="template-title">Modern Tech</h4>
+                            <p class="template-description">Contemporary design with sections for projects, GitHub, and technical skills.</p>
+                            <div class="template-tags">
+                                <span class="template-tag">Tech</span>
+                                <span class="template-tag">Developer</span>
+                                <span class="template-tag">Startup</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="template-card fade-in-up">
+                        <div class="template-preview">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="template-info">
+                            <h4 class="template-title">Creative</h4>
+                            <p class="template-description">Eye-catching design for creative fields like design, marketing, and media.</p>
+                            <div class="template-tags">
+                                <span class="template-tag">Design</span>
+                                <span class="template-tag">Marketing</span>
+                                <span class="template-tag">Media</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="template-card fade-in-up">
+                        <div class="template-preview">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="template-info">
+                            <h4 class="template-title">Business</h4>
+                            <p class="template-description">Sophisticated layout ideal for business and management roles.</p>
+                            <div class="template-tags">
+                                <span class="template-tag">Business</span>
+                                <span class="template-tag">MBA</span>
+                                <span class="template-tag">Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="template-card fade-in-up">
+                        <div class="template-preview">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="template-info">
+                            <h4 class="template-title">Academic</h4>
+                            <p class="template-description">Perfect for research positions, PhD applications, and academic careers.</p>
+                            <div class="template-tags">
+                                <span class="template-tag">Research</span>
+                                <span class="template-tag">Academic</span>
+                                <span class="template-tag">PhD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="template-card fade-in-up">
+                        <div class="template-preview">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="template-info">
+                            <h4 class="template-title">Fresh Graduate</h4>
+                            <p class="template-description">Designed specifically for students with limited work experience.</p>
+                            <div class="template-tags">
+                                <span class="template-tag">Student</span>
+                                <span class="template-tag">Fresher</span>
+                                <span class="template-tag">Entry-level</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="steps-section">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Create your professional resume in just 4 simple steps</p>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="step-item active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Choose Your Template</h3>
+                            <p class="step-description">Select from our collection of professional, ATS-friendly templates designed specifically for students and freshers.</p>
+                        </div>
+                    </div>
+                    <div class="step-item" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Add Your Information</h3>
+                            <p class="step-description">Fill in your details with our smart form. Get AI-powered suggestions for skills, projects, and achievements.</p>
+                        </div>
+                    </div>
+                    <div class="step-item" data-step="3">
+                         <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Customize & Perfect</h3>
+                            <p class="step-description">Personalize colors, fonts, and layout. Use our content analyzer to optimize for ATS systems.</p>
+                        </div>
+                    </div>
+                    <div class="step-item" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Download & Apply</h3>
+                            <p class="step-description">Download in multiple formats or share with a custom link. Track views and get interview callbacks!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="resume-preview" style="position: sticky; top: 2rem;">
+                        <div id="step-demo" style="text-align: center; color: var(--primary);">
+                            <i id="demo-icon" class="fas fa-file-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h5 id="demo-title" style="color: var(--dark); margin-bottom: 1rem;">Choose Your Template</h5>
+                            <div id="demo-content" style="height: 250px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; position: relative;">
+                                <div style="text-align: left; color: var(--dark); opacity: 0.6;">
+                                    <div class="demo-element" style="height: 25px; background: var(--primary); width: 180px; margin-bottom: 15px; border-radius: 3px; opacity: 0.4;"></div>
+                                    <div class="demo-element" style="height: 12px; background: var(--dark); width: 220px; margin-bottom: 8px; border-radius: 2px; opacity: 0.3;"></div>
+                                    <div class="demo-element" style="height: 12px; background: var(--dark); width: 200px; margin-bottom: 8px; border-radius: 2px; opacity: 0.3;"></div>
+                                    <div class="demo-element" style="height: 12px; background: var(--dark); width: 180px; margin-bottom: 20px; border-radius: 2px; opacity: 0.3;"></div>
+                                    <div class="demo-element" style="height: 18px; background: var(--accent); width: 140px; margin-bottom: 12px; border-radius: 3px; opacity: 0.5;"></div>
+                                    <div class="demo-element" style="height: 10px; background: var(--dark); width: 240px; margin-bottom: 5px; border-radius: 1px; opacity: 0.3;"></div>
+                                    <div class="demo-element" style="height: 10px; background: var(--dark); width: 220px; margin-bottom: 5px; border-radius: 1px; opacity: 0.3;"></div>
+                                    <div class="demo-element" style="height: 10px; background: var(--dark); width: 200px; border-radius: 1px; opacity: 0.3;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card fade-in-up">
+                    <span class="stat-number-large" data-count-lg="50000">0</span>
+                    <span class="stat-label-large">Students Helped</span>
+                </div>
+                <div class="stat-card fade-in-up">
+                    <span class="stat-number-large" data-count-lg="95">0</span>
+                    <span class="stat-label-large">% Job Success Rate</span>
+                </div>
+                <div class="stat-card fade-in-up">
+                    <span class="stat-number-large" data-count-lg="24">0</span>
+                    <span class="stat-label-large">Hour Support</span>
+                </div>
+                <div class="stat-card fade-in-up">
+                    <span class="stat-number-large" data-count-lg="500">0</span>
+                    <span class="stat-label-large">+ Companies</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to Land Your Dream Job?</h2>
+            <p class="cta-description">Join thousands of students who have successfully built their careers with SkillSync. Your professional resume is just minutes away!</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-primary-hero" onclick="startResumeBuilder()">
+                    <i class="fas fa-rocket"></i> Start Building Now
+                </button>
+                <button class="btn-secondary-hero" onclick="viewTemplates()">
+                    <i class="fas fa-eye"></i> View Templates
+                </button>
+            </div>
+            <div style="margin-top: 2rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                <i class="fas fa-check"></i> Free to start • <i class="fas fa-check"></i> No credit card required • <i class="fas fa-check"></i> Download instantly
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="#" class="navbar-brand" style="font-size: 2rem; text-decoration: none;">
+                    <i class="fas fa-graduation-cap"></i> SkillSync
+                </a>
+            </div>
+            
+            <div class="footer-links" style="text-align: center; margin-bottom: 2rem;">
+                <a href="#">Features</a>
+                <a href="#">Templates</a>
+                <a href="#">Pricing</a>
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.7);">
+                <p>&copy; 2025 SkillSync. All rights reserved. Built with ❤️ for students.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Counter animation
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start).toLocaleString();
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            }
+            updateCounter();
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    
+                    // Animate counters
+                    const counters = entry.target.querySelectorAll('[data-count]');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-count'));
+                        animateCounter(counter, target);
+                    });
+                    
+                    const counterLg = entry.target.querySelectorAll('[data-count-lg]');
+                    counterLg.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-count-lg'));
+                        animateCounter(counter, target);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Interactive steps
+        function initializeSteps() {
+            const steps = document.querySelectorAll('.step-item');
+            const demoIcon = document.getElementById('demo-icon');
+            const demoTitle = document.getElementById('demo-title');
+            
+            const stepData = {
+                1: { icon: 'fas fa-th-large', title: 'Choose Your Template' },
+                2: { icon: 'fas fa-edit', title: 'Add Your Information' },
+                3: { icon: 'fas fa-palette', title: 'Customize & Perfect' },
+                4: { icon: 'fas fa-download', title: 'Download & Apply' }
+            };
+
+            steps.forEach((step, index) => {
+                step.addEventListener('mouseenter', () => {
+                    steps.forEach(s => s.classList.remove('active'));
+                    step.classList.add('active');
+                    
+                    const stepNum = step.getAttribute('data-step');
+                    if (stepData[stepNum]) {
+                        demoIcon.className = stepData[stepNum].icon;
+                        demoTitle.textContent = stepData[stepNum].title;
+                    }
+                });
+            });
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observe elements for animation
+            const animateElements = document.querySelectorAll('.fade-in-up');
+            animateElements.forEach(el => observer.observe(el));
+            
+            // Initialize hero stats counter immediately
+            const heroCounters = document.querySelectorAll('.hero-stats [data-count]');
+            setTimeout(() => {
+                heroCounters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    animateCounter(counter, target);
+                });
+            }, 1000);
+            
+            // Initialize interactive steps
+            initializeSteps();
+            
+            // Add loading class to trigger animations
+            document.body.classList.add('loading');
+        });
+
+        // Button click handlers
+        function startResumeBuilder() {
+            window.location.href = 'auth.html';
+        }
+
+        function watchDemo() {
+            alert('🎬 Demo Video\n\nThis would open a video showcasing:\n\n• How easy it is to build a resume\n• Template customization options\n• Success stories from students\n• Tips for job applications');
+        }
+
+        function viewTemplates() {
+            document.getElementById('templates').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add subtle parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero-content');
+            
+            parallaxElements.forEach(element => {
+                const speed = 0.5;
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Template card hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const templateCards = document.querySelectorAll('.template-card');
+            
+            templateCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+                
+                card.addEventListener('click', function() {
+                    const templateName = this.querySelector('.template-title').textContent;
+                    alert(`🎨 ${templateName} Template Selected!\n\nThis would open the resume builder with the ${templateName} template pre-loaded, allowing students to customize and build their professional resume.`);
+                });
+            });
+        });
+
+        // Template card demo content
+        document.addEventListener('DOMContentLoaded', () => {
+            const templateCards = document.querySelectorAll('.template-card');
+            const demoContent = document.getElementById('demo-content');
+            
+            templateCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const templateName = this.querySelector('.template-title').textContent;
+                    const templateDescription = this.querySelector('.template-description').textContent;
+                    
+                    demoContent.innerHTML = `
+                        <div style="text-align: left; color: var(--dark); opacity: 0.9;">
+                            <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">${templateName}</div>
+                            <div style="font-size: 12px; margin-bottom: 10px;">${templateDescription}</div>
+                            <div style="font-size: 10px; color: #666;">
+                                <div style="margin-bottom: 5px;">
+                                    <i class="fas fa-check" style="color: var(--primary); margin-right: 5px;"></i> ATS-friendly
+                                </div>
+                                <div style="margin-bottom: 5px;">
+                                    <i class="fas fa-check" style="color: var(--primary); margin-right: 5px;"></i> Customizable
+                                </div>
+                                <div>
+                                    <i class="fas fa-check" style="color: var(--primary); margin-right: 5px;"></i> Free to use
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    demoContent.innerHTML = '';
+                });
+            });
+        });
+
+        function generateModernTemplate() {
+    return `
+    <div class="template-preview">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px; font-size: 10px; height: 100%;">
+            <!-- Sidebar -->
+            <div style="background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 15px 10px; margin: -20px 0 -20px -20px;">
+                <div style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">ALEX CHEN</div>
+                <div style="font-size: 10px; opacity: 0.9; margin-bottom: 12px;">Full Stack Developer</div>
+                <div style="font-size: 10px; font-weight: bold; margin: 10px 0 5px 0;">CONTACT</div>
+                <div style="font-size: 9px; margin-bottom: 2px;">alex.chen@email.com</div>
+                <div style="font-size: 9px; margin-bottom: 2px;">github.com/alexchen</div>
+                <div style="font-size: 9px; margin-bottom: 10px;">linkedin.com/in/alexchen</div>
+                <div style="font-size: 10px; font-weight: bold; margin: 10px 0 5px 0;">SKILLS</div>
+                <div style="font-size: 9px; margin-bottom: 2px;">• JavaScript, Python</div>
+                <div style="font-size: 9px; margin-bottom: 2px;">• React, Node.js</div>
+                <div style="font-size: 9px; margin-bottom: 2px;">• MongoDB, PostgreSQL</div>
+                <div style="font-size: 9px; margin-bottom: 2px;">• AWS, Docker</div>
+            </div>
+            <!-- Main Content -->
+            <div style="padding-top: 5px;">
+                <div style="margin-bottom: 10px;">
+                    <div style="font-size: 11px; font-weight: bold; color: var(--primary); margin-bottom: 5px;">EXPERIENCE</div>
+                    <div style="font-weight: bold; font-size: 10px;">Software Engineering Intern</div>
+                    <div style="color: #666; font-size: 9px;">StartupXYZ | Jun 2024 - Present</div>
+                    <div style="font-size: 9px; margin-top: 2px;">• Built responsive web applications using React</div>
+                    <div style="font-size: 9px;">• Optimized database queries, reducing load time by 40%</div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <div style="font-size: 11px; font-weight: bold; color: var(--primary); margin-bottom: 5px;">PROJECTS</div>
+                    <div style="font-weight: bold; font-size: 10px;">E-commerce Platform</div>
+                    <div style="font-size: 9px;">Full-stack web app with payment integration</div>
+                    <div style="font-weight: bold; font-size: 10px; margin-top: 5px;">Task Management App</div>
+                    <div style="font-size: 9px;">React Native mobile app with real-time sync</div>
+                </div>
+                <div>
+                    <div style="font-size: 11px; font-weight: bold; color: var(--primary); margin-bottom: 5px;">EDUCATION</div>
+                    <div style="font-weight: bold; font-size: 10px;">Computer Science, B.S.</div>
+                    <div style="color: #666; font-size: 9px;">Tech University | 2023-2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+}
+    </script>
+</body>
+</html>
